@@ -82,7 +82,7 @@ let works=[
 ];
 const SUPABASE_URL = "https://aehqnocfebaspurkzojk.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_u1a5h_Stx8ECAy3vOiXHdg_5QmFu8S3";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 const people=[
 {name:"映画好きA",initial:"A",match:96,posts:42,desc:"映画・人間ドラマ中心。余韻が残る作品が好き。"},
 {name:"アニメ研究室",initial:"研",match:93,posts:68,desc:"伏線、世界観、長く語れる作品を中心に紹介。"},
@@ -118,7 +118,7 @@ function sortWorks(s,el){currentSort=s;document.querySelectorAll("#discover .tab
 document.getElementById("search").addEventListener("input",e=>{let q=e.target.value.trim().toLowerCase();if(!q){render();return}let arr=works.filter(w=>(w.title+w.type+w.tags.join("")+w.reason).toLowerCase().includes(q));document.querySelectorAll(".view").forEach(v=>v.style.display="none");document.getElementById("discover").style.display="block";document.getElementById("allGrid").innerHTML=arr.length?arr.map(card).join(""):'<div class="empty">該当する作品がありません。</div>';document.querySelectorAll(".navlinks button").forEach(b=>b.classList.toggle("active",b.dataset.view==="discover"))});
 function showToast(msg){let t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",2200)}
 async function loadLiveRankings() {
-  const { data, error } = await supabase.rpc("get_rankings");
+  const { data, error } = await supabaseClient.rpc("get_rankings");
 
   if (error) {
     console.error("ランキングを読み込めませんでした", error);

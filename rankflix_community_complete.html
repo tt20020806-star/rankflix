@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RANKFLIX — 本当に面白い作品を見つける</title>
+<style>
+:root{--bg:#08090c;--panel:#11131a;--panel2:#171a22;--text:#f4f5f7;--muted:#9da3b1;--line:#262a34;--accent:#ff3158;--accent2:#7c5cff;--gold:#ffc857;--green:#42d392}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% -10%,#261438 0,#08090c 36%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}
+.container{width:min(1160px,92%);margin:auto}.topbar{position:sticky;top:0;z-index:20;background:rgba(8,9,12,.84);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.nav{height:68px;display:flex;align-items:center;gap:22px}.logo{font-weight:900;font-size:24px;letter-spacing:-1px}.logo span{color:var(--accent)}.navlinks{display:flex;gap:7px}.navlinks button,.ghost{background:transparent;border:1px solid transparent;color:var(--muted);padding:9px 12px;border-radius:10px}.navlinks button.active,.navlinks button:hover,.ghost:hover{background:var(--panel2);color:white}.navright{margin-left:auto;display:flex;gap:8px;align-items:center}.search{width:210px;background:var(--panel);border:1px solid var(--line);color:white;padding:10px 13px;border-radius:12px;outline:none}.primary{border:0;background:linear-gradient(135deg,var(--accent),#ff5c7b);color:white;padding:11px 15px;border-radius:11px;font-weight:800}.secondary{border:1px solid var(--line);background:var(--panel);color:white;padding:10px 14px;border-radius:11px}
+.hero{padding:78px 0 54px}.hero h1{font-size:clamp(38px,7vw,76px);line-height:1.02;margin:0 0 20px;letter-spacing:-3px;max-width:850px}.hero h1 em{font-style:normal;color:#ff5274}.hero p{font-size:18px;color:var(--muted);max-width:680px;line-height:1.8}.heroActions{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap}.section{padding:30px 0 58px}.sectionHead{display:flex;align-items:end;justify-content:space-between;margin-bottom:18px}.sectionHead h2{margin:0;font-size:25px}.sectionHead p{margin:5px 0 0;color:var(--muted);font-size:14px}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 20px}.tab{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:9px 13px;border-radius:999px}.tab.active{background:white;color:#111;border-color:white}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card{background:linear-gradient(180deg,#151821,#101219);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:.2s;cursor:pointer}.card:hover{transform:translateY(-4px);border-color:#444a58}.poster{height:245px;background:linear-gradient(135deg,#272b38,#151722);display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;font-size:27px;font-weight:900}.cardbody{padding:14px}.meta{font-size:12px;color:var(--muted);display:flex;gap:8px}.card h3{margin:7px 0 8px;font-size:17px}.score{color:var(--gold);font-weight:900}.reason{font-size:13px;color:#c9ccd5;line-height:1.55;min-height:40px}.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}.chip{font-size:11px;padding:4px 7px;border-radius:999px;background:#20232d;color:#b9beca}.people{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.person{display:flex;gap:13px;padding:16px;background:var(--panel);border:1px solid var(--line);border-radius:15px;align-items:center;cursor:pointer}.avatar{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent2),var(--accent));font-weight:900}.person h3{margin:0 0 4px;font-size:15px}.person p{margin:0;color:var(--muted);font-size:12px}.match{margin-left:auto;color:var(--green);font-weight:900;font-size:13px}.post{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}.posttop{display:flex;gap:10px;align-items:center}.post h3{margin:16px 0 7px}.post q{color:#d7dae2;line-height:1.7}.stars{color:var(--gold);letter-spacing:1px}.postfoot{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:16px}.two{display:grid;grid-template-columns:1.4fr .8fr;gap:18px}.feature{background:linear-gradient(135deg,#1b1827,#11131a);border:1px solid var(--line);padding:22px;border-radius:18px}.feature h2{margin:0 0 10px}.empty{padding:40px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:16px}.footer{border-top:1px solid var(--line);padding:35px 0;color:var(--muted);font-size:13px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}.modal.open{display:flex}.dialog{width:min(760px,100%);max-height:90vh;overflow:auto;background:#11131a;border:1px solid #333845;border-radius:20px;padding:24px}.close{float:right;background:transparent;border:0;color:#aaa;font-size:25px}.detail{display:grid;grid-template-columns:190px 1fr;gap:22px}.detail .poster{height:270px;border-radius:12px}.detail h2{font-size:32px;margin:0 0 8px}.label{font-size:11px;text-transform:uppercase;color:var(--muted);letter-spacing:1px}.form{display:grid;gap:12px}.form input,.form select,.form textarea{width:100%;background:#0c0e13;border:1px solid var(--line);color:white;border-radius:10px;padding:11px}.form textarea{min-height:110px;resize:vertical}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.toast{position:fixed;bottom:22px;right:22px;background:white;color:#111;padding:12px 16px;border-radius:12px;font-weight:700;display:none;z-index:80}.profile{display:grid;grid-template-columns:150px 1fr;gap:24px;align-items:center}.profile .bigavatar{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#7c5cff,#ff3158);font-size:38px;font-weight:900}.stats{display:flex;gap:24px;margin-top:15px}.stats b{display:block;font-size:20px}.stats span{font-size:12px;color:var(--muted)}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.people{grid-template-columns:1fr}.two{grid-template-columns:1fr}.navlinks{display:none}.search{width:150px}}
+@media(max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:10px}.poster{height:190px;font-size:21px}.hero{padding-top:48px}.detail{grid-template-columns:1fr}.detail .poster{height:230px}.formgrid{grid-template-columns:1fr}.search{width:125px}.hero h1{letter-spacing:-2px}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="container nav">
+  <div class="logo">RANK<span>FLIX</span></div>
+  <nav class="navlinks">
+    <button class="active" data-view="home">ホーム</button><button data-view="discover">作品を探す</button><button data-view="people">紹介者を探す</button><button data-view="profile">マイページ</button>
+  </nav>
+  <div class="navright"><input id="search" class="search" placeholder="作品・紹介者を検索"><button class="primary" onclick="openPost()">＋ 紹介する</button></div>
+</div></header>
+
+<main class="container">
+<section id="home" class="view">
+  <div class="hero">
+    <h1>本当に面白い作品を、<br><em>誰かの「好き」から。</em></h1>
+    <p>人気だから見るのではなく、「この人が面白いと言うなら見てみたい」。そんな作品との出会いをつくる、映画・ドラマ・アニメの推薦コミュニティ。</p>
+    <div class="heroActions"><button class="primary" onclick="showView('discover')">作品を探す</button><button class="secondary" onclick="openPost()">自分のおすすめを紹介する</button></div>
+  </div>
+
+  <section class="section"><div class="sectionHead"><div><h2>あなたへのおすすめ</h2><p>あなたと好みが近い人の推薦から選びました</p></div></div><div id="recommendGrid" class="grid"></div></section>
+
+  <section class="section"><div class="sectionHead"><div><h2>💎 知る人ぞ知る作品</h2><p>まだ大きな話題になっていないけれど、熱く薦められている作品</p></div></div><div id="hiddenGrid" class="grid"></div></section>
+
+  <section class="section"><div class="sectionHead"><div><h2>👤 あなたと好みが近い紹介者</h2><p>「この人のおすすめなら見たい」を見つけよう</p></div></div><div id="peopleHome" class="people"></div></section>
+
+  <section class="section"><div class="sectionHead"><div><h2>✍️ 最近の推薦</h2><p>作品への「なぜ面白いか」を読む</p></div></div><div id="postsHome" class="two"></div></section>
+</section>
+
+<section id="discover" class="view" style="display:none"><div class="section" style="padding-top:45px">
+  <div class="sectionHead"><div><h2>作品を探す</h2><p>評価の高さだけでなく、誰が・なぜ薦めているかで探せます</p></div></div>
+  <div class="tabs"><button class="tab active" onclick="filterType('all',this)">すべて</button><button class="tab" onclick="filterType('映画',this)">映画</button><button class="tab" onclick="filterType('ドラマ',this)">ドラマ</button><button class="tab" onclick="filterType('アニメ',this)">アニメ</button></div>
+  <div class="tabs"><button class="tab active" onclick="sortWorks('trust',this)">信頼されている順</button><button class="tab" onclick="sortWorks('rating',this)">評価順</button><button class="tab" onclick="sortWorks('votes',this)">推薦数順</button><button class="tab" onclick="sortWorks('new',this)">新着順</button></div>
+  <div id="allGrid" class="grid"></div>
+</div></section>
+
+<section id="people" class="view" style="display:none"><div class="section" style="padding-top:45px">
+  <div class="sectionHead"><div><h2>紹介者を探す</h2><p>作品ではなく「人」から次の一本を見つけよう</p></div></div>
+  <div id="peopleAll" class="people"></div>
+</div></section>
+
+<section id="profile" class="view" style="display:none"><div class="section" style="padding-top:45px">
+  <div class="feature profile"><div class="bigavatar">T</div><div><div class="label">YOUR PROFILE</div><h2>映画好きT</h2><p style="color:var(--muted)">「誰かの休日を一本で変えたい」がモットー。</p><div class="stats"><div><b id="myPostCount">3</b><span>紹介した作品</span></div><div><b>128</b><span>フォロワー</span></div><div><b>91%</b><span>推薦の納得度</span></div></div></div></div>
+  <div class="section"><div class="sectionHead"><div><h2>あなたの紹介</h2><p>自分の「面白い」を記録して、誰かに届ける</p></div><button class="primary" onclick="openPost()">＋ 新しく紹介</button></div><div id="myPosts" class="two"></div></div>
+</div></section>
+</main>
+
+<footer class="footer"><div class="container">RANKFLIX — 本当に面白い作品を、誰かの「好き」から。<br><span>※現在はデモ版です。表示される作品・評価・推薦数はサンプルデータです。</span></div></footer>
+
+<div id="detailModal" class="modal"><div class="dialog"><button class="close" onclick="closeModal('detailModal')">×</button><div id="detailContent"></div></div></div>
+<div id="postModal" class="modal"><div class="dialog"><button class="close" onclick="closeModal('postModal')">×</button><h2>作品を紹介する</h2><p style="color:var(--muted)">「なぜ面白いのか」を書くと、あなたのおすすめが誰かの次の一本になります。</p>
+<form id="postForm" class="form"><div class="formgrid"><div><label class="label">作品名</label><input id="pTitle" required></div><div><label class="label">種類</label><select id="pType"><option>映画</option><option>ドラマ</option><option>アニメ</option></select></div></div>
+<div><label class="label">あなたの評価</label><select id="pRating"><option value="5">★★★★★ 5.0</option><option value="4">★★★★☆ 4.0</option><option value="3">★★★☆☆ 3.0</option><option value="2">★★☆☆☆ 2.0</option><option value="1">★☆☆☆☆ 1.0</option></select></div>
+<div><label class="label">推薦コメント</label><textarea id="pReason" required placeholder="例：映像がすごいだけじゃなく、最後の30分で物語の見え方が変わります。"></textarea></div>
+<div><label class="label">おすすめタグ（カンマ区切り）</label><input id="pTags" placeholder="泣ける, 世界観, ラストがすごい"></div>
+<button class="primary" type="submit">この作品を紹介する</button></form></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+const works=[
+{id:1,title:"インターステラー",type:"映画",year:2014,rating:4.9,votes:184,trust:96,tags:["SF","家族","余韻"],reason:"SFのスケールに圧倒されながら、最後は家族の物語として心に残る。",poster:"INTERSTELLAR"},
+{id:2,title:"舟を編む",type:"映画",year:2013,rating:4.8,votes:73,trust:94,tags:["人間ドラマ","言葉","静かな感動"],reason:"辞書を作る人々の仕事を通して、言葉と人とのつながりを丁寧に描く。",poster:"舟を編む"},
+{id:3,title:"アンナチュラル",type:"ドラマ",year:2018,rating:4.9,votes:211,trust:97,tags:["ミステリー","人間ドラマ","泣ける"],reason:"事件を解く面白さだけでなく、一話ごとに残る問いが強い。",poster:"アンナチュラル"},
+{id:4,title:"進撃の巨人",type:"アニメ",year:2013,rating:4.8,votes:356,trust:95,tags:["世界観","伏線","重厚"],reason:"何気ない設定が後から意味を持つ。先の展開を知るほど見返したくなる。",poster:"進撃の巨人"},
+{id:5,title:"リトル・ミス・サンシャイン",type:"映画",year:2006,rating:4.7,votes:58,trust:93,tags:["家族","笑える","人生"],reason:"不器用な家族が旅をするだけなのに、見終わる頃には全員を好きになっている。",poster:"LITTLE MISS SUNSHINE"},
+{id:6,title:"MIU404",type:"ドラマ",year:2020,rating:4.8,votes:126,trust:96,tags:["バディ","社会派","爽快"],reason:"テンポのいい掛け合いと社会の見えにくい部分を描く視点が魅力。",poster:"MIU404"},
+{id:7,title:"葬送のフリーレン",type:"アニメ",year:2023,rating:4.9,votes:302,trust:98,tags:["旅","余韻","人生"],reason:"派手さよりも、時間が過ぎていくことの美しさがじわじわ効いてくる。",poster:"葬送のフリーレン"},
+{id:8,title:"PERFECT DAYS",type:"映画",year:2023,rating:4.6,votes:41,trust:92,tags:["日常","映像","余韻"],reason:"大きな事件がなくても、日常を見る目が少し変わる作品。",poster:"PERFECT DAYS"}
+];
+const people=[
+{name:"映画好きA",initial:"A",match:96,posts:42,desc:"映画・人間ドラマ中心。余韻が残る作品が好き。"},
+{name:"アニメ研究室",initial:"研",match:93,posts:68,desc:"伏線、世界観、長く語れる作品を中心に紹介。"},
+{name:"夜ドラ部",initial:"夜",match:91,posts:31,desc:"一話目から引き込まれる国内ドラマを発掘。"},
+{name:"休日シネマ",initial:"休",match:88,posts:54,desc:"家族で見られる作品から隠れた名作まで。"},
+{name:"物語収集家",initial:"物",match:86,posts:87,desc:"ジャンルを問わず、物語そのものを楽しむ派。"},
+{name:"映像派",initial:"映",match:84,posts:37,desc:"映像表現と音楽が印象的な作品を紹介。"}
+];
+let currentType="all", currentSort="trust", customPosts=[];
+
+function card(w){return `<article class="card" onclick="openDetail(${w.id})"><div class="poster">${w.poster}</div><div class="cardbody"><div class="meta"><span>${w.type}</span><span>${w.year}</span><span class="score">★ ${w.rating}</span></div><h3>${w.title}</h3><div class="reason">${w.reason}</div><div class="chips">${w.tags.map(x=>`<span class="chip">${x}</span>`).join("")}</div><div class="meta" style="margin-top:10px"><span>推薦 ${w.votes}人</span><span style="color:var(--green)">相性 ${w.trust}%</span></div></div></article>`}
+function render(){let arr=works.filter(w=>currentType==="all"||w.type===currentType);if(currentSort==="rating")arr.sort((a,b)=>b.rating-a.rating);if(currentSort==="votes")arr.sort((a,b)=>b.votes-a.votes);if(currentSort==="new")arr.sort((a,b)=>b.year-a.year);if(currentSort==="trust")arr.sort((a,b)=>b.trust-a.trust);
+document.getElementById("allGrid").innerHTML=arr.map(card).join("");
+document.getElementById("recommendGrid").innerHTML=works.slice().sort((a,b)=>b.trust-a.trust).slice(0,4).map(card).join("");
+document.getElementById("hiddenGrid").innerHTML=works.slice().sort((a,b)=>a.votes-b.votes).slice(0,4).map(card).join("");
+document.getElementById("peopleHome").innerHTML=people.slice(0,3).map(person).join("");
+document.getElementById("peopleAll").innerHTML=people.map(person).join("");
+document.getElementById("postsHome").innerHTML=posts().slice(0,2).map(postCard).join("");
+document.getElementById("myPosts").innerHTML=posts().filter(p=>p.mine).map(postCard).join("")||'<div class="empty">まだ紹介投稿がありません。「＋ 新しく紹介」から投稿できます。</div>';
+document.getElementById("myPostCount").textContent=posts().filter(p=>p.mine).length;
+}
+function person(p){return `<div class="person" onclick="showToast('${p.name}のプロフィールはデモ版です')"><div class="avatar">${p.initial}</div><div><h3>${p.name}</h3><p>${p.desc}</p></div><div class="match">${p.match}%<small style="display:block;color:var(--muted);font-weight:400">好み一致</small></div></div>`}
+function posts(){return [{title:"インターステラー",reason:"SF映画だけど、最後に残るのは「家族を思う気持ち」の話。見終わったあと誰かと話したくなる。",name:"映画好きA",rating:5,tags:["SF","家族"],mine:false},{title:"葬送のフリーレン",reason:"派手なバトルより、時間の流れと人との出会いをじっくり味わいたい人に。",name:"アニメ研究室",rating:5,tags:["余韻","旅"],mine:false},{title:"舟を編む",reason:"言葉を扱う仕事をしている人にも、そうでない人にも見てほしい。静かだけど強い作品。",name:"映画好きT",rating:5,tags:["言葉","人間ドラマ"],mine:true},...customPosts]}
+function postCard(p){return `<div class="post"><div class="posttop"><div class="avatar" style="width:40px;height:40px;font-size:13px">${p.name.slice(0,1)}</div><div><b>${p.name}</b><div class="stars">${"★".repeat(p.rating)}${"☆".repeat(5-p.rating)}</div></div></div><h3>${p.title}</h3><q>${p.reason}</q><div class="chips">${p.tags.map(x=>`<span class="chip">${x}</span>`).join("")}</div><div class="postfoot"><span>「見てみたい」 28</span><span>共感 92%</span></div></div>`}
+function openDetail(id){let w=works.find(x=>x.id===id);document.getElementById("detailContent").innerHTML=`<div class="detail"><div class="poster">${w.poster}</div><div><div class="label">${w.type} / ${w.year}</div><h2>${w.title}</h2><div class="stars">★★★★★ <span style="color:white">${w.rating}</span></div><p style="color:#cdd0d8;line-height:1.8">${w.reason}</p><div class="chips">${w.tags.map(x=>`<span class="chip">${x}</span>`).join("")}</div><hr style="border:0;border-top:1px solid var(--line);margin:20px 0"><p><b>この作品を薦めている人</b><br><span style="color:var(--muted)">推薦者 ${w.votes}人 ・ あなたとの好みの相性 ${w.trust}%</span></p><button class="primary" onclick="showToast('「見てみたい」に追加しました')">＋ 見てみたい</button></div></div>`;openModal("detailModal")}
+function openPost(){openModal("postModal")}
+document.getElementById("postForm").addEventListener("submit",e=>{e.preventDefault();customPosts.unshift({title:pTitle.value,reason:pReason.value,name:"映画好きT",rating:+pRating.value,tags:pTags.value.split(",").map(x=>x.trim()).filter(Boolean),mine:true});closeModal("postModal");e.target.reset();render();showToast("紹介を投稿しました")});
+function openModal(id){document.getElementById(id).classList.add("open")}function closeModal(id){document.getElementById(id).classList.remove("open")}
+function showView(id){document.querySelectorAll(".view").forEach(v=>v.style.display=v.id===id?"block":"none");document.querySelectorAll(".navlinks button").forEach(b=>b.classList.toggle("active",b.dataset.view===id))}
+document.querySelectorAll(".navlinks button").forEach(b=>b.onclick=()=>showView(b.dataset.view));
+function filterType(t,el){currentType=t;document.querySelectorAll("#discover .tabs:first-of-type .tab").forEach(x=>x.classList.remove("active"));el.classList.add("active");render()}
+function sortWorks(s,el){currentSort=s;document.querySelectorAll("#discover .tabs:nth-of-type(2) .tab").forEach(x=>x.classList.remove("active"));el.classList.add("active");render()}
+document.getElementById("search").addEventListener("input",e=>{let q=e.target.value.trim().toLowerCase();if(!q){render();return}let arr=works.filter(w=>(w.title+w.type+w.tags.join("")+w.reason).toLowerCase().includes(q));document.querySelectorAll(".view").forEach(v=>v.style.display="none");document.getElementById("discover").style.display="block";document.getElementById("allGrid").innerHTML=arr.length?arr.map(card).join(""):'<div class="empty">該当する作品がありません。</div>';document.querySelectorAll(".navlinks button").forEach(b=>b.classList.toggle("active",b.dataset.view==="discover"))});
+function showToast(msg){let t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",2200)}
+render();
+</script>
+</body>
+</html>

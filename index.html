@@ -12,6 +12,7 @@
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.people{grid-template-columns:1fr}.two{grid-template-columns:1fr}.navlinks{display:none}.search{width:150px}}
 @media(max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:10px}.poster{height:190px;font-size:21px}.hero{padding-top:48px}.detail{grid-template-columns:1fr}.detail .poster{height:230px}.formgrid{grid-template-columns:1fr}.search{width:125px}.hero h1{letter-spacing:-2px}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <header class="topbar"><div class="container nav">
@@ -69,7 +70,7 @@
 <div id="toast" class="toast"></div>
 
 <script>
-const works=[
+let works=[
 {id:1,title:"インターステラー",type:"映画",year:2014,rating:4.9,votes:184,trust:96,tags:["SF","家族","余韻"],reason:"SFのスケールに圧倒されながら、最後は家族の物語として心に残る。",poster:"INTERSTELLAR"},
 {id:2,title:"舟を編む",type:"映画",year:2013,rating:4.8,votes:73,trust:94,tags:["人間ドラマ","言葉","静かな感動"],reason:"辞書を作る人々の仕事を通して、言葉と人とのつながりを丁寧に描く。",poster:"舟を編む"},
 {id:3,title:"アンナチュラル",type:"ドラマ",year:2018,rating:4.9,votes:211,trust:97,tags:["ミステリー","人間ドラマ","泣ける"],reason:"事件を解く面白さだけでなく、一話ごとに残る問いが強い。",poster:"アンナチュラル"},
@@ -79,6 +80,9 @@ const works=[
 {id:7,title:"葬送のフリーレン",type:"アニメ",year:2023,rating:4.9,votes:302,trust:98,tags:["旅","余韻","人生"],reason:"派手さよりも、時間が過ぎていくことの美しさがじわじわ効いてくる。",poster:"葬送のフリーレン"},
 {id:8,title:"PERFECT DAYS",type:"映画",year:2023,rating:4.6,votes:41,trust:92,tags:["日常","映像","余韻"],reason:"大きな事件がなくても、日常を見る目が少し変わる作品。",poster:"PERFECT DAYS"}
 ];
+const SUPABASE_URL = "https://aehqnocfebaspurkzojk.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_u1a5h_Stx8ECAy3vOiXHdg_5QmFu8S3";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 const people=[
 {name:"映画好きA",initial:"A",match:96,posts:42,desc:"映画・人間ドラマ中心。余韻が残る作品が好き。"},
 {name:"アニメ研究室",initial:"研",match:93,posts:68,desc:"伏線、世界観、長く語れる作品を中心に紹介。"},
@@ -113,7 +117,35 @@ function filterType(t,el){currentType=t;document.querySelectorAll("#discover .ta
 function sortWorks(s,el){currentSort=s;document.querySelectorAll("#discover .tabs:nth-of-type(2) .tab").forEach(x=>x.classList.remove("active"));el.classList.add("active");render()}
 document.getElementById("search").addEventListener("input",e=>{let q=e.target.value.trim().toLowerCase();if(!q){render();return}let arr=works.filter(w=>(w.title+w.type+w.tags.join("")+w.reason).toLowerCase().includes(q));document.querySelectorAll(".view").forEach(v=>v.style.display="none");document.getElementById("discover").style.display="block";document.getElementById("allGrid").innerHTML=arr.length?arr.map(card).join(""):'<div class="empty">該当する作品がありません。</div>';document.querySelectorAll(".navlinks button").forEach(b=>b.classList.toggle("active",b.dataset.view==="discover"))});
 function showToast(msg){let t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",2200)}
-render();
+async function loadLiveRankings() {
+  const { data, error } = await supabase.rpc("get_rankings");
+
+  if (error) {
+    console.error("ランキングを読み込めませんでした", error);
+    return;
+  }
+
+  if (!data || data.length === 0) return;
+
+  const labels = { movie: "映画", drama: "ドラマ", anime: "アニメ" };
+
+  works = data.map((row) => ({
+    id: row.work_id,
+    title: row.title,
+    type: labels[row.media_type] || row.media_type,
+    year: row.release_year,
+    rating: Number(row.average_score || 0),
+    votes: Number(row.rating_count || 0),
+    trust: 0,
+    tags: [labels[row.media_type] || row.media_type],
+    reason: row.description || "まだ推薦コメントはありません。",
+    poster: row.title
+  }));
+
+  render();
+}
+
+loadLiveRankings();
 </script>
 </body>
 </html>
